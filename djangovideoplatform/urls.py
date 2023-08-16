@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+from rest_framework_swagger.views import get_swagger_view
 
 from djangovideoplatform.views import *
 
@@ -26,13 +27,10 @@ router.register(r'comments', CommentViewSet)
 router.register(r'reactions', ReactionViewSet)
 router.register(r'subscriptions', SubscriptionViewSet)
 
+schema_view = get_swagger_view(title='Video Platform API')
+
 urlpatterns = [
+    path('', schema_view),
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
-
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
-    ]
-}
